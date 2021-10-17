@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+  web:
+    platform: linux/x86_64
+    image: casvad/sparklb
+    container_name: web
+    ports:
+      - "8080:8088"
+    environment:
+      PORT: 8088
+      API_URLS: "http://backend1:8089,http://backend2:8089,http://backend3:8089"
+  backend1:
+    platform: linux/x86_64
+    image: casvad/firstsparkwebapprepo
+    container_name: backend1
+    ports:
+      - "6000:8089"
+    environment:
+      PORT: 8089
+      MONGO_URI: "mongodb://spark:spark@db:27017"
+      MONGO_DATABASE: "admin"
+  backend2:
+    platform: linux/x86_64
+    image: casvad/firstsparkwebapprepo
+    container_name: backend2
+    ports:
+      - "6001:8089"
+    environment:
+      PORT: 8089
+      MONGO_URI: "mongodb://spark:spark@db:27017"
+      MONGO_DATABASE: "admin"
+  backend3:
+    platform: linux/x86_64
+    image: casvad/firstsparkwebapprepo
+    container_name: backend3
+    ports:
+      - "6002:8089"
+    environment:
+      PORT: 8089
+      MONGO_URI: "mongodb://spark:spark@db:27017"
+      MONGO_DATABASE: "admin"
+  db:
+    image: mongo
+    container_name: db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: spark
+      MONGO_INITDB_ROOT_PASSWORD: spark
+
+volumes:
+  mongodb:
+  mongodb_config:
